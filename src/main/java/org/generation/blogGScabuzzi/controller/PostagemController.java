@@ -1,6 +1,7 @@
 package org.generation.blogGScabuzzi.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -9,6 +10,7 @@ import org.generation.blogGScabuzzi.repository.PostagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +57,18 @@ public class PostagemController {
 	@PutMapping("/atualizar")
 	public ResponseEntity<Postagem> atualizar(@Valid @RequestBody Postagem novaPostagem) {
 		return ResponseEntity.status(201).body(repository.save(novaPostagem));
+	}
+	
+	@DeleteMapping("/deletar/{id}")
+	public ResponseEntity<Postagem> deletar(@PathVariable(value = "id") Long idPostagem){
+		Optional<Postagem> objetoOptional = repository.findById(idPostagem);
+		
+		if(objetoOptional.isPresent()) {
+			repository.deleteById(idPostagem);
+			return ResponseEntity.status(204).build();
+		}else {
+			return ResponseEntity.status(400).build();
+		}
 	}
 	
 	
