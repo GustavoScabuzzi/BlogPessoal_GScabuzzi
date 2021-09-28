@@ -50,7 +50,8 @@ public class PostagemController {
 	}
 
 	@PostMapping("/salvar")
-	public ResponseEntity<Postagem> salvar(@Valid @RequestBody Postagem novaPostagem) {
+	public ResponseEntity<Postagem> salvar(@Valid @RequestBody Postagem novaPostagem) { // @Valid = Valida as informaçoes passadas no Model
+																						// @RequestBody = Pega as informaçoes passadas no corpo do Postman
 		return ResponseEntity.status(201).body(repository.save(novaPostagem));
 	}
 
@@ -76,12 +77,6 @@ public class PostagemController {
 		}
 	}
 
-	/**
-	 * Method delete -> Usado em nas video aulas
-	 * 
-	 * @author Gustavo Scabuzzi
-	 * @param id
-	 */
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
 		repository.deleteById(id);

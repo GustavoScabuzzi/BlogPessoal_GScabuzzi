@@ -13,7 +13,7 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> { // Ã
 	 * Metodo utilizado para realizar pesquisa pela coluna titulo da tabela Postagem
 	 * 
 	 * @param titulo
-	 * @return lista com Postagem
+	 * @return lista com Postagem a partir do titulo digitado
 	 * @author Gustavo Scabuzzi
 	 * @since 1.0
 	 */
@@ -23,7 +23,7 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> { // Ã
 	 * Metodo utilizado para realizar pesquisa pela coluna texto da tabela Postagem
 	 * 
 	 * @param titulo
-	 * @return lista com Postagem
+	 * @return lista com Postagens a partir do tema digitado
 	 * @author Gustavo Scabuzzi
 	 * @since 1.0
 	 */
