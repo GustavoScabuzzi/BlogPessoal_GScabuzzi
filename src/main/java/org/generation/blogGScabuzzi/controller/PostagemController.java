@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/postagens")
@@ -34,39 +35,50 @@ public class PostagemController {
 														// todas as postagens
 	}
 
-	@GetMapping("/id/{id}")
-	public ResponseEntity<Postagem> GetById(@PathVariable long id) {
-		return repository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
+	@GetMapping("{id_postagem}")
+	public ResponseEntity<Postagem> getById(@PathVariable(value = "id_postagem") Long idPostagem) {
+		return repository.findById(idPostagem).map(resp -> ResponseEntity.status(200).body(resp))
+				.orElseThrow(() -> {
+					throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+							"ID inexistente, passe um ID valido para pesquisa!");
+				});
 	}
 
 	@GetMapping("/titulo/{titulo}")
-	public ResponseEntity<List<Postagem>> GetByTitulo(@PathVariable String titulo) {
-		return ResponseEntity.ok(repository.findAllByTituloContainingIgnoreCase(titulo));
+	public ResponseEntity<List<Postagem>> getAllByTitulo(@PathVariable(value = "titulo") String titulo){
+		List<Postagem> Lista = repository.findAllByTituloContainingIgnoreCase(titulo);
+		
+		if(Lista.isEmpty()) {
+			return ResponseEntity.status(204).build();
+		}else {
+			return ResponseEntity.status(200).body(Lista);
+		}
 	}
 
 	@GetMapping("/texto/{texto}")
-	public ResponseEntity<List<Postagem>> GetByTexto(@PathVariable String texto) {
-		return ResponseEntity.ok(repository.findAllByTextoContainingIgnoreCase(texto));
+	public ResponseEntity<List<Postagem>> getAllByTexto(@PathVariable(value = "texto") String texto){
+		List<Postagem> Lista = repository.findAllByTextoContainingIgnoreCase(texto);
+		
+		if(Lista.isEmpty()) {
+			return ResponseEntity.status(204).build();
+		}else {
+			return ResponseEntity.status(200).body(Lista);
+		}
 	}
 
-	@PostMapping("/salvar")
-	public ResponseEntity<Postagem> salvar(@Valid @RequestBody Postagem novaPostagem) { // @Valid = Valida as informaçoes passadas no Model
+	@PostMapping("/post")
+	public ResponseEntity<Postagem> salvarPostagem(@Valid @RequestBody Postagem novaPostagem) { // @Valid = Valida as informaçoes passadas no Model
 																						// @RequestBody = Pega as informaçoes passadas no corpo do Postman
 		return ResponseEntity.status(201).body(repository.save(novaPostagem));
 	}
 
-	@PutMapping("/atualizar") // METODO PUT ENSINADO EM AULA
-	public ResponseEntity<Postagem> atualizar(@Valid @RequestBody Postagem novaPostagem) {
+	@PutMapping("/put") // METODO PUT ENSINADO EM AULA
+	public ResponseEntity<Postagem> atualizarPostagem(@Valid @RequestBody Postagem novaPostagem) {
 		return ResponseEntity.status(201).body(repository.save(novaPostagem));
 	}
 
-	@PutMapping // METODO PUT ENSINADO EM VIDEO
-	public ResponseEntity<Postagem> put(@RequestBody Postagem postagem) {
-		return ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem));
-	}
-
-	@DeleteMapping("/deletar/{id}") // METODO DELETE ENSINADO EM AULA
-	public ResponseEntity<Postagem> deletar(@PathVariable(value = "id") Long idPostagem) {
+	@DeleteMapping("/delete/{id_postagem}") // METODO DELETE ENSINADO EM AULA
+	public ResponseEntity<Postagem> deletarUsuario(@PathVariable(value = "id_postagem") Long idPostagem) {
 		Optional<Postagem> objetoOptional = repository.findById(idPostagem);
 
 		if (objetoOptional.isPresent()) {
@@ -75,11 +87,6 @@ public class PostagemController {
 		} else {
 			return ResponseEntity.status(400).build();
 		}
-	}
-
-	@DeleteMapping("/{id}")
-	public void delete(@PathVariable long id) {
-		repository.deleteById(id);
 	}
 
 }
