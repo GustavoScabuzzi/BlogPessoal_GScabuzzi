@@ -6,7 +6,10 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.generation.blogGScabuzzi.model.Usuario;
+import org.generation.blogGScabuzzi.model.dtos.LoginDTO;
+import org.generation.blogGScabuzzi.model.dtos.UsuarioLoginDTO;
 import org.generation.blogGScabuzzi.repository.UsuarioRepository;
+import org.generation.blogGScabuzzi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,64 +28,67 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/usuarios")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
-	
+
+	@Autowired
+	private UsuarioService service;
+
 	@Autowired
 	private UsuarioRepository repository;
-	
+
+	@PostMapping("/logar")
+	public ResponseEntity<LoginDTO> logar(@Valid @RequestBody UsuarioLoginDTO userParaAutenticar) {
+		return service.pegarCredenciais(userParaAutenticar);
+	}
+
+	@PostMapping("/cadastrar")
+	public ResponseEntity<Object> cadastrar(@Valid @RequestBody Usuario novoUsuario) {
+		return service.cadastrarUsuario(novoUsuario).map(resp -> ResponseEntity.status(201).body(resp)) // metodo service.cadastrarUsuario vai verificar
+																										// se o email já existe e dar um retorno
+																										// CREATED ou Null
+				.orElseThrow(() -> {											// Caso for Null entrará no "orElseThrow"
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST,	// E retornará um BAD_REQUEST dizendo que o email já existe no banco de dados
+							"Email existente, cadastre outro email!.");
+				});
+
+	}
+
 	@GetMapping("/todos")
-	public ResponseEntity<List<Usuario>> GetAll(){
+	public ResponseEntity<List<Usuario>> getAll() {
 		return ResponseEntity.ok(repository.findAll());
 	}
-	
+
 	@GetMapping("{id_usuario}")
-	public ResponseEntity<Usuario> getById(@PathVariable(value = "id_usuario") Long idUsuario){
-		return repository.findById(idUsuario).map(resp -> ResponseEntity.status(200).body(resp))
-				.orElseThrow(() -> {
-					throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-							"ID inexistente, passe um ID valido para pesquisa!");
-				});	
+	public ResponseEntity<Usuario> getById(@PathVariable(value = "id_usuario") Long idUsuario) {
+		return repository.findById(idUsuario).map(resp -> ResponseEntity.status(200).body(resp)).orElseThrow(() -> {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+					"ID inexistente, passe um ID valido para pesquisa!");
+		});
 	}
-	
+
 	@GetMapping("/nome/{nome}")
-	public ResponseEntity<List<Usuario>> getAllByNome(@PathVariable(value = "nome") String nome){
+	public ResponseEntity<List<Usuario>> getAllByNome(@PathVariable(value = "nome") String nome) {
 		List<Usuario> Lista = repository.findAllByNomeContainingIgnoreCase(nome);
-		
-		if(Lista.isEmpty()) {
+
+		if (Lista.isEmpty()) {
 			return ResponseEntity.status(204).build();
-		}else {
+		} else {
 			return ResponseEntity.status(200).body(Lista);
 		}
 	}
-	
-	@GetMapping("/email/{email}")
-	public ResponseEntity<List<Usuario>> getAllByEmail(@PathVariable(value = "email") String email){
-		List<Usuario> Lista = repository.findAllByEmailContainingIgnoreCase(email);
-		
-		if(Lista.isEmpty()) {
-			return ResponseEntity.status(204).build();
-		}else {
-			return ResponseEntity.status(200).body(Lista);
-		}
-	}
-	
-	@PostMapping("/post")
-	public ResponseEntity<Usuario> salvarUsuario(@Valid @RequestBody Usuario novoUsuario){
-		return ResponseEntity.status(200).body(repository.save(novoUsuario));
-	}
-	
+
 	@PutMapping("/put")
-	public ResponseEntity<Usuario> atualizarUsuario(@Valid @RequestBody Usuario novoUsuario){
+	public ResponseEntity<Usuario> atualizarUsuario(@Valid @RequestBody Usuario novoUsuario) {
 		return ResponseEntity.status(201).body(repository.save(novoUsuario));
 	}
-	
+
 	@DeleteMapping("/delete/{id_usuario}")
-	public ResponseEntity<Usuario> deleteUsuario(@PathVariable(value = "id_usuario") Long idUsuario){
+	public ResponseEntity<Usuario> deleteUsuario(@PathVariable(value = "id_usuario") Long idUsuario) {
 		Optional<Usuario> objetoOptional = repository.findById(idUsuario);
-		
-		if(objetoOptional.isPresent()) {
+
+		if (objetoOptional.isPresent()) {
 			repository.deleteById(idUsuario);
 			return ResponseEntity.status(204).build();
-		}else {
+		} else {
 			return ResponseEntity.status(400).build();
 		}
 	}
