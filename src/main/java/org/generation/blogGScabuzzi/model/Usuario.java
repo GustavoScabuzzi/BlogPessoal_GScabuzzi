@@ -9,10 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 public class Usuario {
@@ -24,7 +27,9 @@ public class Usuario {
 	@NotBlank
 	private String nome;
 	
-	@NotBlank
+	@ApiModelProperty(example = "email@email.com.br")
+	@NotBlank(message = "O atributo Usuário é Obrigatório!")
+	@Email(message = "O atributo Usuário deve ser um email válido!")
 	private String email;
 	
 	@NotBlank
