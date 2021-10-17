@@ -14,7 +14,7 @@ public class BlogGScabuzziApplication {
 
 	@GetMapping
 	public ModelAndView swaggerUi() {						// Fará o redirecionamento para a pagina correta do swagger caso só insira o localHost:8080
-		return new ModelAndView("redirect:https://www.facebook.com/");
+		return new ModelAndView("redirect:/swagger-ui/");
 	}
 	
 	public static void main(String[] args) {
