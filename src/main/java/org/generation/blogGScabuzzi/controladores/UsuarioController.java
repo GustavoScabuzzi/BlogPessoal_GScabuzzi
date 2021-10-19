@@ -24,39 +24,68 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/usuarios")
+@Api(tags = "USUARIO - Controlador", description = "Utilitario de Usuarios")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
 
-	@Autowired
-	private UsuarioService service;
+	private @Autowired UsuarioService service;
+	private @Autowired UsuarioRepository repository;
 
-	@Autowired
-	private UsuarioRepository repository;
-
+	@ApiOperation(value = "Autentica usuario no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna credenciais de usuario"),
+			@ApiResponse(code = 400, message = "Erro na requisição!")
+	})
 	@PostMapping("/logar")
 	public ResponseEntity<LoginDTO> logar(@Valid @RequestBody UsuarioLoginDTO userParaAutenticar) {
 		return service.pegarCredenciais(userParaAutenticar);
 	}
 
+	@ApiOperation(value = "Salva novo usuario no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna usuario cadastrado"),
+			@ApiResponse(code = 400, message = "Erro na requisição")
+	})
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Object> cadastrar(@Valid @RequestBody Usuario novoUsuario) {
-		return service.cadastrarUsuario(novoUsuario).map(resp -> ResponseEntity.status(201).body(resp)) // metodo service.cadastrarUsuario vai verificar
-																										// se o email já existe e dar um retorno
-																										// CREATED ou Null
-				.orElseThrow(() -> {											// Caso for Null entrará no "orElseThrow"
-					throw new ResponseStatusException(HttpStatus.BAD_REQUEST,	// E retornará um BAD_REQUEST dizendo que o email já existe no banco de dados
+		return service.cadastrarUsuario(novoUsuario).map(resp -> ResponseEntity.status(201).body(resp)) // metodo
+																										// service.cadastrarUsuario
+																										// vai verificar
+																										// se o email já
+																										// existe e dar
+																										// um retorno
+																										// CREATED ou
+																										// Null
+				.orElseThrow(() -> { // Caso for Null entrará no "orElseThrow"
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, // E retornará um BAD_REQUEST dizendo que
+																				// o email já existe no banco de dados
 							"Email existente, cadastre outro email!.");
 				});
 
 	}
 
+	@ApiOperation(value = "Busca lista de usuarios no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna com Usuarios"),
+			@ApiResponse(code = 204, message = "Retorno sem Usuario")
+	})
 	@GetMapping("/todos")
 	public ResponseEntity<List<Usuario>> getAll() {
 		return ResponseEntity.ok(repository.findAll());
 	}
 
+	@ApiOperation(value = "Busca usuario por Id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna usuario existente ou inexistente"),
+			@ApiResponse(code = 400, message = "Retorno inexistente")
+	})
 	@GetMapping("{id_usuario}")
 	public ResponseEntity<Usuario> getById(@PathVariable(value = "id_usuario") Long idUsuario) {
 		return repository.findById(idUsuario).map(resp -> ResponseEntity.status(200).body(resp)).orElseThrow(() -> {
@@ -65,6 +94,11 @@ public class UsuarioController {
 		});
 	}
 
+	@ApiOperation(value = "Busca usuario por nome")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna usuario existente ou inexistente"),
+			@ApiResponse(code = 204, message = "Retorno inexistente")
+	})
 	@GetMapping("/nome/{nome}")
 	public ResponseEntity<List<Usuario>> getAllByNome(@PathVariable(value = "nome") String nome) {
 		List<Usuario> Lista = repository.findAllByNomeContainingIgnoreCase(nome);
@@ -76,11 +110,21 @@ public class UsuarioController {
 		}
 	}
 
+	@ApiOperation(value = "Atualizar usuario existente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna usuario atualizado"),
+			@ApiResponse(code = 400, message = "Id de usuario invalido")
+	})
 	@PutMapping("/put")
 	public ResponseEntity<Usuario> atualizarUsuario(@Valid @RequestBody Usuario novoUsuario) {
 		return ResponseEntity.status(201).body(repository.save(novoUsuario));
 	}
 
+	@ApiOperation(value = "Deletar usuario existente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Caso deletado!"),
+			@ApiResponse(code = 400, message = "Id de usuario invalido")
+	})
 	@DeleteMapping("/delete/{id_usuario}")
 	public ResponseEntity<Usuario> deleteUsuario(@PathVariable(value = "id_usuario") Long idUsuario) {
 		Optional<Usuario> objetoOptional = repository.findById(idUsuario);
