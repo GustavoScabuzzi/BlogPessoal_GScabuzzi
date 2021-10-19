@@ -1,4 +1,4 @@
-package org.generation.blogGScabuzzi.seguranca;
+package org.generation.blogGScabuzzi.segurancas;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

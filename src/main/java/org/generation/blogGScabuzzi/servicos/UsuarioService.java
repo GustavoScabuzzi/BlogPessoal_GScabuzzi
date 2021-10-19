@@ -1,13 +1,13 @@
-package org.generation.blogGScabuzzi.service;
+package org.generation.blogGScabuzzi.servicos;
 
 import java.nio.charset.Charset;
 import java.util.Optional;
 
 import org.apache.commons.codec.binary.Base64;
-import org.generation.blogGScabuzzi.model.Usuario;
-import org.generation.blogGScabuzzi.model.dtos.LoginDTO;
-import org.generation.blogGScabuzzi.model.dtos.UsuarioLoginDTO;
-import org.generation.blogGScabuzzi.repository.UsuarioRepository;
+import org.generation.blogGScabuzzi.modelos.Usuario;
+import org.generation.blogGScabuzzi.modelos.dtos.LoginDTO;
+import org.generation.blogGScabuzzi.modelos.dtos.UsuarioLoginDTO;
+import org.generation.blogGScabuzzi.repositorios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

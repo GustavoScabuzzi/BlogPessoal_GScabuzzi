@@ -1,9 +1,8 @@
-package org.generation.blogGScabuzzi.seguranca;
+package org.generation.blogGScabuzzi.segurancas;
 
 import java.util.Collection;
-import java.util.List;
 
-import org.generation.blogGScabuzzi.model.Usuario;
+import org.generation.blogGScabuzzi.modelos.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,7 +11,6 @@ public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUTD = 1L;
 	private String userEmail;
 	private String password;
-	private List<GrantedAuthority> autorizacoes;
 
 	public UserDetailsImpl(Usuario user) {
 		this.userEmail = user.getNome();

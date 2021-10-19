@@ -1,9 +1,9 @@
-package org.generation.blogGScabuzzi.repository;
+package org.generation.blogGScabuzzi.repositorios;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.generation.blogGScabuzzi.model.Usuario;
+import org.generation.blogGScabuzzi.modelos.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

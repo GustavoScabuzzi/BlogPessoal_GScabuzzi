@@ -1,4 +1,4 @@
-package org.generation.blogGScabuzzi.model.dtos;
+package org.generation.blogGScabuzzi.modelos.dtos;
 
 public class LoginDTO {
 

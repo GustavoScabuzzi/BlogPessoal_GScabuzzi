@@ -1,9 +1,9 @@
-package org.generation.blogGScabuzzi.seguranca;
+package org.generation.blogGScabuzzi.segurancas;
 
 import java.util.Optional;
 
-import org.generation.blogGScabuzzi.model.Usuario;
-import org.generation.blogGScabuzzi.repository.UsuarioRepository;
+import org.generation.blogGScabuzzi.modelos.Usuario;
+import org.generation.blogGScabuzzi.repositorios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

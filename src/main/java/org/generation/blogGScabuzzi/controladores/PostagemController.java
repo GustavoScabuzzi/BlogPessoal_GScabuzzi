@@ -1,12 +1,12 @@
-package org.generation.blogGScabuzzi.controller;
+package org.generation.blogGScabuzzi.controladores;
 
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.generation.blogGScabuzzi.model.Postagem;
-import org.generation.blogGScabuzzi.repository.PostagemRepository;
+import org.generation.blogGScabuzzi.modelos.Postagem;
+import org.generation.blogGScabuzzi.repositorios.PostagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
