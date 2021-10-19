@@ -21,60 +21,93 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/temas")
+@Api(tags = "TEMA - Controlador", description = "Utilitario de Temas")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TemaController {
 
-	@Autowired
-	private TemaRepository  repository;
-	
+	private @Autowired TemaRepository repository;
+
+	@ApiOperation(value = "Busca lista de todos os Temas no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna com todos os Temas"),
+			@ApiResponse(code = 204, message = "Retorno sem Temas")
+	})
 	@GetMapping("/todos")
-	public ResponseEntity<List<Tema>> getAll(){
+	public ResponseEntity<List<Tema>> getAll() {
 		return ResponseEntity.ok(repository.findAll());
 	}
-	
+
+	@ApiOperation(value = "Busca tema por Id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna tema existente ou inexistente"),
+			@ApiResponse(code = 400, message = "Retorno inexistente")
+	})
 	@GetMapping("{id_tema}")
-	public ResponseEntity<Tema> getById(@PathVariable(value = "id_tema") Long idTema){
-		return repository.findById(idTema).map(resp -> ResponseEntity.status(200).body(resp))
-				.orElseThrow(() -> {
-					throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-							"ID inexistente, passe um ID valido para pesquisa!");
-				});
+	public ResponseEntity<Tema> getById(@PathVariable(value = "id_tema") Long idTema) {
+		return repository.findById(idTema).map(resp -> ResponseEntity.status(200).body(resp)).orElseThrow(() -> {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+					"ID inexistente, passe um ID valido para pesquisa!");
+		});
 	}
-	
-	
+
+	@ApiOperation(value = "Busca tema por nome")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna tema existente ou inexistente"),
+			@ApiResponse(code = 204, message = "Retorno inexistente")
+	})
 	@GetMapping("/tema/{nome_tema}")
-	public ResponseEntity<List<Tema>> getAllByTema(@PathVariable(value = "nome_tema") String tema){
+	public ResponseEntity<List<Tema>> getAllByTema(@PathVariable(value = "nome_tema") String tema) {
 		List<Tema> Lista = repository.findAllByTemaContainingIgnoreCase(tema);
-		
-		if(Lista.isEmpty()) {
+
+		if (Lista.isEmpty()) {
 			return ResponseEntity.status(204).build();
-		}else {
+		} else {
 			return ResponseEntity.status(200).body(Lista);
 		}
 	}
-	
+
+	@ApiOperation(value = "Salva novo tema no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna tema cadastrado"),
+			@ApiResponse(code = 400, message = "Erro na requisição")
+	})
 	@PostMapping("/post")
-	public ResponseEntity<Tema> adicionarTema(@Valid @RequestBody Tema novoTema){
+	public ResponseEntity<Tema> adicionarTema(@Valid @RequestBody Tema novoTema) {
 		return ResponseEntity.status(201).body(repository.save(novoTema));
 	}
-	
+
+	@ApiOperation(value = "Atualizar tema existente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna tema atualizado"),
+			@ApiResponse(code = 400, message = "Id de tema invalido")
+	})
 	@PutMapping("/put")
-	public ResponseEntity<Tema> atualizarTema(@Valid @RequestBody Tema tema){
+	public ResponseEntity<Tema> atualizarTema(@Valid @RequestBody Tema tema) {
 		return ResponseEntity.status(201).body(repository.save(tema));
 	}
-	
+
+	@ApiOperation(value = "Deletar tema existente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Tema deletado!"),
+			@ApiResponse(code = 400, message = "Id de tema invalido")
+	})
 	@DeleteMapping("/delete/{id_tema}")
-	public ResponseEntity<Tema> deletarTema(@PathVariable(value = "id_tema") Long idTema){
+	public ResponseEntity<Tema> deletarTema(@PathVariable(value = "id_tema") Long idTema) {
 		Optional<Tema> objetoOptional = repository.findById(idTema);
-		
-		if(objetoOptional.isPresent()) {
+
+		if (objetoOptional.isPresent()) {
 			repository.deleteById(idTema);
 			return ResponseEntity.status(204).build();
-		}else {
+		} else {
 			return ResponseEntity.status(400).build();
 		}
 	}
-	
+
 }
