@@ -1,15 +1,15 @@
-package org.generation.blogGScabuzzi.controller;
+package org.generation.blogGScabuzzi.controladores;
 
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.generation.blogGScabuzzi.model.Usuario;
-import org.generation.blogGScabuzzi.model.dtos.LoginDTO;
-import org.generation.blogGScabuzzi.model.dtos.UsuarioLoginDTO;
-import org.generation.blogGScabuzzi.repository.UsuarioRepository;
-import org.generation.blogGScabuzzi.service.UsuarioService;
+import org.generation.blogGScabuzzi.modelos.Usuario;
+import org.generation.blogGScabuzzi.modelos.dtos.LoginDTO;
+import org.generation.blogGScabuzzi.modelos.dtos.UsuarioLoginDTO;
+import org.generation.blogGScabuzzi.repositorios.UsuarioRepository;
+import org.generation.blogGScabuzzi.servicos.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package org.generation.blogGScabuzzi.configuration;
+package org.generation.blogGScabuzzi.configuracoes;
 
 import java.util.ArrayList;
 import java.util.List;

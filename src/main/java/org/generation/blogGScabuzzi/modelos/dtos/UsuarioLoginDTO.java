@@ -1,4 +1,4 @@
-package org.generation.blogGScabuzzi.model.dtos;
+package org.generation.blogGScabuzzi.modelos.dtos;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

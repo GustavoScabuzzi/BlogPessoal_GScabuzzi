@@ -1,4 +1,4 @@
-package org.generation.blogGScabuzzi.model;
+package org.generation.blogGScabuzzi.modelos;
 
 import java.util.Date;
 

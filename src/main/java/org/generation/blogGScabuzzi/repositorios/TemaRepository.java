@@ -1,8 +1,8 @@
-package org.generation.blogGScabuzzi.repository;
+package org.generation.blogGScabuzzi.repositorios;
 
 import java.util.List;
 
-import org.generation.blogGScabuzzi.model.Tema;
+import org.generation.blogGScabuzzi.modelos.Tema;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TemaRepository extends JpaRepository<Tema, Long> {
