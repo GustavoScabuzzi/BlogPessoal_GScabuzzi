@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/postagens")
-@Api(tags = "POSTAGEMS - Controlador", description = "Utilitario de Postagem")
+@Api(tags = "POSTAGENS - Controlador", description = "Utilitario de Postagem")
 @CrossOrigin("*")
 public class PostagemController {
 
