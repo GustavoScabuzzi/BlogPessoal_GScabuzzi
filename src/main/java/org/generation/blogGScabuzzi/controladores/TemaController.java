@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/temas")
-@Api(tags = "TEMA - Controlador", description = "Utilitario de Temas")
+@Api(tags = "TEMAS - Controlador", description = "Utilitario de Temas")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TemaController {
 
