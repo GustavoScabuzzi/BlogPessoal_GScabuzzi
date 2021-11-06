@@ -36,6 +36,10 @@ public class Usuario {
 	@Size(min = 5, max = 100)
 	private String senha;
 	
+	private String foto;
+	
+	private String tipo;
+	
 	@OneToMany(mappedBy = "usuarioRelacionado", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties({"usuarioRelacionado"})
 	private List<Postagem> postagensUsuario = new ArrayList<>();
@@ -70,6 +74,22 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public List<Postagem> getPostagensUsuario() {

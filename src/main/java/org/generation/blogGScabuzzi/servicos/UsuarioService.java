@@ -49,6 +49,8 @@ public class UsuarioService {
 				objetoCredenciaisDTO.setNome(resp.getNome());						// Seta o nome do usuario que está logado
 				objetoCredenciaisDTO.setEmail(resp.getEmail());						// Seta o email do usuario que está logado
 				objetoCredenciaisDTO.setSenha(resp.getSenha());						// Seta a senha do usuario que está logado
+				objetoCredenciaisDTO.setFoto(resp.getFoto());						// Seta a foto do usuario que está logado
+				objetoCredenciaisDTO.setTipo(resp.getTipo());						// Seta a tipo (Normal ou ADM) do usuario que está logado
 
 				return ResponseEntity.status(201).body(objetoCredenciaisDTO); // Usuario Credenciado - Usuario foi criado e retorná uma resposta CREATED
 			} else {																		// A senha informada nao for correta enviara uma resposta BAD_REQUEST
