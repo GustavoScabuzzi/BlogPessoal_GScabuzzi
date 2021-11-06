@@ -1,5 +1,6 @@
 package org.generation.blogGScabuzzi.modelos;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -41,8 +42,8 @@ public class Postagem {
 	@Size(min = 10, max = 500)
 	private String texto;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date date = new java.sql.Date(System.currentTimeMillis());
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dataPostagem = LocalDate.now();
 
 	@ManyToOne
 	@JoinColumn(name = "tema_id")
@@ -80,12 +81,12 @@ public class Postagem {
 		this.texto = texto;
 	}
 
-	public Date getDate() {
-		return date;
+	public LocalDate getDataPostagem() {
+		return dataPostagem;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDataPostagem(LocalDate dataPostagem) {
+		this.dataPostagem = dataPostagem;
 	}
 
 	public Tema getTemaRelacionado() {
@@ -103,7 +104,5 @@ public class Postagem {
 	public void setUsuarioRelacionado(Usuario usuarioRelacionado) {
 		this.usuarioRelacionado = usuarioRelacionado;
 	}
-
-	
 
 }

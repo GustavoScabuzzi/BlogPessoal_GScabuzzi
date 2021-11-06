@@ -26,7 +26,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("org.generation.blogGScabuzzi.controller")) // Será passado o
+				.apis(RequestHandlerSelectors.basePackage("org.generation.blogGScabuzzi.controladores")) // Será passado o
 																										// local dos
 																										// controladores
 				.paths(PathSelectors.any()).build().apiInfo(metadata()).useDefaultResponseMessages(false);
